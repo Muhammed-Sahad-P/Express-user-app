@@ -1,61 +1,83 @@
 const express = require("express");
 const path = require("path");
+const connectDB = require("./db");
+const User = require("./models/User");
 const app = express();
 const PORT = 3000;
+
+connectDB();
 
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname)));
 
-let users = [];
-
-app.post("/users", (req, res) => {
+app.post("/users", async (req, res) => {
   const { name, email, username } = req.body;
   if (!name || !email || !username) {
     return res
       .status(400)
       .json({ message: "Name, email, and username are required" });
   }
-  const id = users.length + 1;
-  const newUser = { id, name, email, username };
-  users.push(newUser);
-  res.status(201).json(newUser);
-});
-
-app.get("/users", (req, res) => {
-  res.json(users);
-});
-
-app.get("/users/:id", (req, res) => {
-  const { id } = req.params;
-  const user = users.find((user) => user.id === parseInt(id));
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
+  try {
+    const newUser = new User({ id, name, email, username });
+    await newUser.save();
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(500).json({ message: "server error occured" });
   }
-  res.json(user);
 });
 
-app.put("/users/:id", (req, res) => {
+app.get("/users", async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: "server error occured" });
+  }
+});
+
+app.get("/users/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "server error occured" });
+  }
+});
+
+app.put("/users/:id", async (req, res) => {
   const { id } = req.params;
   const { name, email, username } = req.body;
-  const user = users.find((user) => user.id === parseInt(id));
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (name !== undefined) user.name = name;
+    if (email !== undefined) user.email = email;
+    if (username !== undefined) user.username = username;
+    await user.save();
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "server error occured" });
   }
-  if (name !== undefined) user.name = name;
-  if (email !== undefined) user.email = email;
-  if (username !== undefined) user.username = username;
-  res.json(user);
 });
 
-app.delete("/users/:id", (req, res) => {
+app.delete("/users/:id", async (req, res) => {
   const { id } = req.params;
-  const userIndex = users.findIndex((user) => user.id === parseInt(id));
-  if (userIndex === -1) {
-    return res.status(404).json({ message: "User not found" });
+  try {
+    const user = await User.findByIdAndDelete(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "server error occured" });
   }
-  const deletedUser = users.splice(userIndex, 1);
-  res.json(deletedUser);
 });
 
 app.listen(PORT, () => {
