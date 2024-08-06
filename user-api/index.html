@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Management</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <h1>User Management</h1>
+
+    <form id="userForm">
+      <input type="hidden" id="userId" />
+      <input type="text" id="name" placeholder="Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="text" id="username" placeholder="Username" required />
+      <button type="submit" id="submitButton">Create User</button>
+    </form>
+
+    <div class="user-list">
+      <button onclick="getAllUsers()">Get All Users</button>
+      <ul id="usersList"></ul>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document
+          .getElementById("userForm")
+          .addEventListener("submit", function (event) {
+            event.preventDefault();
+            const userId = document.getElementById("userId").value;
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const username = document.getElementById("username").value;
+
+            if (userId) {
+              updateUser(userId, { name, email, username });
+            } else {
+              createUser({ name, email, username });
+            }
+          });
+
+        window.getAllUsers = function () {
+          fetch("http://localhost:3000/users")
+            .then((response) => response.json())
+            .then((data) => {
+              const usersList = document.getElementById("usersList");
+              usersList.innerHTML = "";
+              data.forEach((user) => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                            <strong>ID:</strong> ${user.id} <br>
+                            <strong>Name:</strong> ${user.name} <br>
+                            <strong>Email:</strong> ${user.email} <br>
+                            <strong>Username:</strong> ${user.username} <br>
+                            <button class="edit-button" onclick="editUser(${user.id})">Edit</button>
+                            <button onclick="deleteUser(${user.id})">Delete</button>
+                        `;
+                usersList.appendChild(li);
+              });
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        };
+
+        window.createUser = function (user) {
+          fetch("http://localhost:3000/users", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(user),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              alert("User created successfully");
+              resetForm();
+              getAllUsers(); // Refresh the list
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        };
+
+        window.updateUser = function (id, user) {
+          fetch(`http://localhost:3000/users/${id}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(user),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              alert("User updated successfully");
+              resetForm();
+              getAllUsers(); // Refresh the list
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        };
+
+        window.deleteUser = function (id) {
+          fetch(`http://localhost:3000/users/${id}`, {
+            method: "DELETE",
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              alert("User deleted successfully");
+              getAllUsers(); // Refresh the list
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        };
+
+        window.editUser = function (id) {
+          fetch(`http://localhost:3000/users/${id}`)
+            .then((response) => response.json())
+            .then((user) => {
+              document.getElementById("userId").value = user.id;
+              document.getElementById("name").value = user.name;
+              document.getElementById("email").value = user.email;
+              document.getElementById("username").value = user.username;
+              document.getElementById("submitButton").textContent =
+                "Update User";
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        };
+
+        function resetForm() {
+          document.getElementById("userId").value = "";
+          document.getElementById("name").value = "";
+          document.getElementById("email").value = "";
+          document.getElementById("username").value = "";
+          document.getElementById("submitButton").textContent = "Create User";
+        }
+      });
+    </script>
+  </body>
+</html>
