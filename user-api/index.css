@@ -1,99 +1,100 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0;
-    padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 20px;
 }
 h1 {
-    text-align: center;
-    color: #333;
-    margin-top: 20px;
+  text-align: center;
+  color: #333;
+  margin-top: 20px;
 }
-form, .user-list {
-    width: 80%;
-    max-width: 600px;
-    margin: 20px 0;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+form,
+.user-list {
+  width: 80%;
+  max-width: 600px;
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
-form input, form button {
-    width: calc(100% - 20px);
-    margin: 10px 0;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
+form input,
+form button {
+  width: calc(100% - 20px);
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
 }
 form button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 form button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 .user-list button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-bottom: 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 20px;
 }
 .user-list button:hover {
-    background-color: #218838;
+  background-color: #218838;
 }
 .user-list ul {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 .user-list li {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin: 10px;
-    width: calc(33% - 40px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: transform 0.3s ease;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease;
 }
 .user-list li:hover {
-    transform: translateY(-10px);
+  transform: translateY(-10px);
 }
 .user-list li strong {
-    display: block;
-    margin-bottom: 5px;
-    color: #555;
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
 }
 .user-list li button {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    padding: 5px 10px;
-    margin-top: 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-top: 10px;
 }
 .user-list li button:hover {
-    background-color: #c82333;
+  background-color: #c82333;
 }
 .user-list li .edit-button {
-    background-color: #007bff;
+  background-color: #007bff;
 }
 .user-list li .edit-button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }

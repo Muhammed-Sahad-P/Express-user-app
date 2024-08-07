@@ -19,11 +19,11 @@ app.post("/users", async (req, res) => {
       .json({ message: "Name, email, and username are required" });
   }
   try {
-    const newUser = new User({ id, name, email, username });
+    const newUser = new User({ name, email, username });
     await newUser.save();
     res.status(201).json(newUser);
   } catch (error) {
-    res.status(500).json({ message: "server error occured" });
+    res.status(500).json({ message: error.message });
   }
 });
 
@@ -69,6 +69,8 @@ app.put("/users/:id", async (req, res) => {
 
 app.delete("/users/:id", async (req, res) => {
   const { id } = req.params;
+  console.log(id);
+  
   try {
     const user = await User.findByIdAndDelete(id);
     if (!user) {
